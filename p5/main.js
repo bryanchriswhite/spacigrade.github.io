@@ -18,6 +18,5 @@ function draw() {
 }
 
 function mouseClicked(e) {
-    player.dash(e.clientX, e.clientY)
-    console.log(e.clientX, e.clientY)
+    player.initializeDash(e.clientX, e.clientY)
 }
