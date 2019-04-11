@@ -30,8 +30,9 @@ message JoinResponse {
         REJECT = 1;
     }
 
-    Type type = 1;
-    bytes authorization = 2;
+    Player player = 1;
+    Type type = 2;
+    bytes authorization = 3;
 }
 
 message Player {
@@ -58,6 +59,7 @@ message Object {
 message StatusUpdateRequest {
     Player player = 1;
     Action action = 2;
+    bytes authorization = 3;
 }
 
 message Map {

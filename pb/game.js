@@ -466,7 +466,8 @@ proto.pb.JoinResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.pb.JoinResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    type: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    player: (f = msg.getPlayer()) && proto.pb.Player.toObject(includeInstance, f),
+    type: jspb.Message.getFieldWithDefault(msg, 2, 0),
     authorization: msg.getAuthorization_asB64()
   };
 
@@ -505,10 +506,15 @@ proto.pb.JoinResponse.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = new proto.pb.Player;
+      reader.readMessage(value,proto.pb.Player.deserializeBinaryFromReader);
+      msg.setPlayer(value);
+      break;
+    case 2:
       var value = /** @type {!proto.pb.JoinResponse.Type} */ (reader.readEnum());
       msg.setType(value);
       break;
-    case 2:
+    case 3:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setAuthorization(value);
       break;
@@ -541,17 +547,25 @@ proto.pb.JoinResponse.prototype.serializeBinary = function() {
  */
 proto.pb.JoinResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getPlayer();
+  if (f != null) {
+    writer.writeMessage(
+      1,
+      f,
+      proto.pb.Player.serializeBinaryToWriter
+    );
+  }
   f = message.getType();
   if (f !== 0.0) {
     writer.writeEnum(
-      1,
+      2,
       f
     );
   }
   f = message.getAuthorization_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      2,
+      3,
       f
     );
   }
@@ -567,31 +581,61 @@ proto.pb.JoinResponse.Type = {
 };
 
 /**
- * optional Type type = 1;
+ * optional Player player = 1;
+ * @return {?proto.pb.Player}
+ */
+proto.pb.JoinResponse.prototype.getPlayer = function() {
+  return /** @type{?proto.pb.Player} */ (
+    jspb.Message.getWrapperField(this, proto.pb.Player, 1));
+};
+
+
+/** @param {?proto.pb.Player|undefined} value */
+proto.pb.JoinResponse.prototype.setPlayer = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.pb.JoinResponse.prototype.clearPlayer = function() {
+  this.setPlayer(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.pb.JoinResponse.prototype.hasPlayer = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional Type type = 2;
  * @return {!proto.pb.JoinResponse.Type}
  */
 proto.pb.JoinResponse.prototype.getType = function() {
-  return /** @type {!proto.pb.JoinResponse.Type} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.pb.JoinResponse.Type} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /** @param {!proto.pb.JoinResponse.Type} value */
 proto.pb.JoinResponse.prototype.setType = function(value) {
-  jspb.Message.setProto3EnumField(this, 1, value);
+  jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 
 /**
- * optional bytes authorization = 2;
+ * optional bytes authorization = 3;
  * @return {!(string|Uint8Array)}
  */
 proto.pb.JoinResponse.prototype.getAuthorization = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /**
- * optional bytes authorization = 2;
+ * optional bytes authorization = 3;
  * This is a type-conversion wrapper around `getAuthorization()`
  * @return {string}
  */
@@ -602,7 +646,7 @@ proto.pb.JoinResponse.prototype.getAuthorization_asB64 = function() {
 
 
 /**
- * optional bytes authorization = 2;
+ * optional bytes authorization = 3;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getAuthorization()`
@@ -616,7 +660,7 @@ proto.pb.JoinResponse.prototype.getAuthorization_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.pb.JoinResponse.prototype.setAuthorization = function(value) {
-  jspb.Message.setProto3BytesField(this, 2, value);
+  jspb.Message.setProto3BytesField(this, 3, value);
 };
 
 
@@ -1200,7 +1244,8 @@ proto.pb.StatusUpdateRequest.prototype.toObject = function(opt_includeInstance) 
 proto.pb.StatusUpdateRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     player: (f = msg.getPlayer()) && proto.pb.Player.toObject(includeInstance, f),
-    action: (f = msg.getAction()) && proto.pb.Action.toObject(includeInstance, f)
+    action: (f = msg.getAction()) && proto.pb.Action.toObject(includeInstance, f),
+    authorization: msg.getAuthorization_asB64()
   };
 
   if (includeInstance) {
@@ -1247,6 +1292,10 @@ proto.pb.StatusUpdateRequest.deserializeBinaryFromReader = function(msg, reader)
       reader.readMessage(value,proto.pb.Action.deserializeBinaryFromReader);
       msg.setAction(value);
       break;
+    case 3:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setAuthorization(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1290,6 +1339,13 @@ proto.pb.StatusUpdateRequest.serializeBinaryToWriter = function(message, writer)
       2,
       f,
       proto.pb.Action.serializeBinaryToWriter
+    );
+  }
+  f = message.getAuthorization_asU8();
+  if (f.length > 0) {
+    writer.writeBytes(
+      3,
+      f
     );
   }
 };
@@ -1352,6 +1408,45 @@ proto.pb.StatusUpdateRequest.prototype.clearAction = function() {
  */
 proto.pb.StatusUpdateRequest.prototype.hasAction = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional bytes authorization = 3;
+ * @return {!(string|Uint8Array)}
+ */
+proto.pb.StatusUpdateRequest.prototype.getAuthorization = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * optional bytes authorization = 3;
+ * This is a type-conversion wrapper around `getAuthorization()`
+ * @return {string}
+ */
+proto.pb.StatusUpdateRequest.prototype.getAuthorization_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getAuthorization()));
+};
+
+
+/**
+ * optional bytes authorization = 3;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getAuthorization()`
+ * @return {!Uint8Array}
+ */
+proto.pb.StatusUpdateRequest.prototype.getAuthorization_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getAuthorization()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.pb.StatusUpdateRequest.prototype.setAuthorization = function(value) {
+  jspb.Message.setProto3BytesField(this, 3, value);
 };
 
 
