@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"net"
 	"os"
 
@@ -22,6 +23,7 @@ type AuthorizedPlayer struct {
 	Player        *pb.Player
 }
 
+// Server contains all variables relevant to game world state
 type Server struct {
 	maxPlayers    int
 	players       map[string]*AuthorizedPlayer // key = player name
@@ -34,29 +36,47 @@ func initializeFlags() {
 	flag.Parse()
 }
 
+// Connection maintains a connection between client/server and handles bidirectional game state changes
 func (s *Server) Connection(stream pb.Game_ConnectionServer) error {
-	// 	for {
-	// 		res, err := stream.Recv()
-	// 		if err != nil {
-	// 			if err == io.EOF {
-	// 				break
-	// 			}
-	// 			return err
-	// 		}
-	// 		fmt.Println("received", res.GetData())
-	// 		err = stream.Send(&pb.SampleBidirectionalResponse{
-	// 			Data: res.GetData(),
-	// 		})
-	// 		if err != nil {
-	// 			if err == io.EOF {
-	// 				break
-	// 			}
-	// 			return err
-	// 		}
-	// 	}
-	return nil
+
+	errCh := make(chan error)
+
+	go func() {
+		for {
+			// Receive message from client
+			_, err := stream.Recv()
+			if err != nil {
+				if err == io.EOF {
+					errCh <- nil
+				}
+
+				errCh <- err
+				return
+			}
+
+			// verify player and authorization
+
+			// determine changes
+		}
+	}()
+
+	go func() {
+		// Send world update to client
+		err := stream.Send(&pb.StatusUpdateResponse{})
+		if err != nil {
+			if err == io.EOF {
+				errCh <- nil
+			}
+
+			errCh <- err
+			return
+		}
+	}()
+
+	return <-errCh
 }
 
+// Join the Game Server
 func (s *Server) Join(req *pb.JoinRequest, stream pb.Game_JoinServer) error {
 
 	playerIdentity := req.GetIdentity()
@@ -83,8 +103,9 @@ func (s *Server) Join(req *pb.JoinRequest, stream pb.Game_JoinServer) error {
 	nap := s.newAuthorizedPlayer(playerIdentity, authorization)
 
 	err := stream.Send(&pb.JoinResponse{
-		Player: nap.Player,
-		Type:   pb.JoinResponse_ACCEPT,
+		Player:        nap.Player,
+		Type:          pb.JoinResponse_ACCEPT,
+		Authorization: authorization,
 	})
 	if err != nil {
 		return err
@@ -95,8 +116,9 @@ func (s *Server) Join(req *pb.JoinRequest, stream pb.Game_JoinServer) error {
 	return nil
 }
 
+// Create a new authorized player
 func (s *Server) newAuthorizedPlayer(identity, authorization []byte) *AuthorizedPlayer {
-	// TODO: Determine x, y
+	// TODO: Determine x, y based on other players and objects
 
 	return &AuthorizedPlayer{
 		Authorization: authorization,
@@ -112,6 +134,7 @@ func (s *Server) newAuthorizedPlayer(identity, authorization []byte) *Authorized
 	}
 }
 
+// Spectator creates a spectator
 func Spectator() *pb.Player {
 	return &pb.Player{
 		Type: pb.Player_SPECTATOR,
