@@ -43,9 +43,16 @@ message Player {
     bytes identity = 1;
     int64 x = 2;
     int64 y = 3;
-    int64 health = 4;
-    int64 experience = 5;
-    Type type = 6;
+    int64 r = 4;
+    int64 health = 5;
+    int64 experience = 6;
+    Type type = 7;
+}
+
+message Object {
+    int64 x = 1;
+    int64 y = 2;
+    int64 r = 3;
 }
 
 message StatusUpdateRequest {
@@ -53,6 +60,13 @@ message StatusUpdateRequest {
     Action action = 2;
 }
 
-message StatusUpdateResponse {
-    Player player = 1;
+message Map {
+    repeated Player players = 1;
+    repeated Object objects = 2;
 }
+
+message StatusUpdateResponse {
+    Map map = 1;
+    Player current_player = 2;
+}
+

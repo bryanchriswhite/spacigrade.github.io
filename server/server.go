@@ -16,6 +16,9 @@ var (
 )
 
 type Server struct {
+	players       []*pb.Player
+	height, width int
+	objects       []*pb.Object
 }
 
 func initializeFlags() {
