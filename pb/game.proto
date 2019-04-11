@@ -1,0 +1,58 @@
+syntax = "proto3";
+option go_package = "pb";
+
+package pb;
+
+service Game {
+    rpc Connection(stream StatusUpdateRequest) returns (stream StatusUpdateResponse) {}
+    rpc Join(JoinRequest) returns (stream JoinResponse) {}
+}
+
+message Action {
+    enum Type {
+        MOVE = 0;
+        ATTACK = 1;
+        RECEIVE_HIT = 2;
+    }
+
+    Type type = 1;
+    int64 damage = 2;
+    bytes identity = 3;
+}
+
+message JoinRequest {
+    bytes identity = 1;
+}
+
+message JoinResponse {
+    enum Type {
+        ACCEPT = 0;
+        REJECT = 1;
+    }
+
+    Type type = 1;
+    bytes authorization = 2;
+}
+
+message Player {
+    enum Type {
+        ACTIVE = 0;
+        SPECTATOR = 1;
+    }
+
+    bytes identity = 1;
+    int64 x = 2;
+    int64 y = 3;
+    int64 health = 4;
+    int64 experience = 5;
+    Type type = 6;
+}
+
+message StatusUpdateRequest {
+    Player player = 1;
+    Action action = 2;
+}
+
+message StatusUpdateResponse {
+    Player player = 1;
+}
