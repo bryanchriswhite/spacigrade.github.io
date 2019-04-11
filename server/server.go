@@ -156,8 +156,8 @@ func main() {
 
 	s := &Server{
 		maxPlayers: 5,
-		height:     50,
-		width:      50,
+		height:     500,
+		width:      500,
 	}
 	pb.RegisterGameServer(grpcServer, s)
 

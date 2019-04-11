@@ -1,55 +1,53 @@
-var dashTime = 250
-
 function Player(x, y) {
-    this.x = x
-    this.y = y
-    this.walkSpeed = 1;
-    this.dashSpeed = 5;
+    this.x = x;
+    this.y = y;
+    this.walkSpeed = 5;
+    this.dashSpeed = 25;
     this.dashing = false;
     this.dashEndX = 0;
     this.dashEndY = 0;
-    this.dashMaxDistance = 100;
+    this.dashMaxDistance = 600;
+    this.r = 20;
 
     this.update = function () {
 
         if (this.dashing) { // dashing
             this.dash()
-        } else { // walking 
-            if (keyIsDown(LEFT_ARROW)) {
-                player.walk(LEFT_ARROW)
-            }
+        }
+        if (keyIsDown(LEFT_ARROW)) {
+            player.walk(LEFT_ARROW)
+        }
 
-            if (keyIsDown(RIGHT_ARROW)) {
-                player.walk(RIGHT_ARROW)
-            }
+        if (keyIsDown(RIGHT_ARROW)) {
+            player.walk(RIGHT_ARROW)
+        }
 
-            if (keyIsDown(UP_ARROW)) {
-                player.walk(UP_ARROW)
-            }
+        if (keyIsDown(UP_ARROW)) {
+            player.walk(UP_ARROW)
+        }
 
-            if (keyIsDown(DOWN_ARROW)) {
-                player.walk(DOWN_ARROW)
-            }
+        if (keyIsDown(DOWN_ARROW)) {
+            player.walk(DOWN_ARROW)
         }
     }
 
     this.display = function () {
-        ellipse(this.x, this.y, 20, 20);
+        ellipse(this.x, this.y, this.r, this.r);
     }
 
     this.walk = function (direction) {
         switch (direction) {
             case LEFT_ARROW:
-                this.x -= 1
+                this.x -= this.walkSpeed
                 break;
             case RIGHT_ARROW:
-                this.x += 1
+                this.x += this.walkSpeed
                 break;
             case UP_ARROW:
-                this.y -= 1
+                this.y -= this.walkSpeed
                 break;
             case DOWN_ARROW:
-                this.y += 1
+                this.y += this.walkSpeed
                 break;
         }
     }
