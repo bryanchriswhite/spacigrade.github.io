@@ -3,6 +3,8 @@ var enemies = [];
 var stars = [];
 var starCount = 200;
 var points = 0;
+var maxEnemies = 10;
+
 function setup() {
     createCanvas(displayWidth * .99, displayHeight * .89);
     createStarfield();
@@ -12,6 +14,31 @@ function setup() {
 function draw() {
     background(0);
     moveStarField();
+
+    if (enemies.length < maxEnemies) {
+        enemies.push(
+            new Enemy(
+                Math.floor(Math.random() * width),
+                Math.floor(Math.random() * height),
+                Math.floor(Math.random() * 3) + 1,
+                Math.floor(Math.random() * 100) + 80
+            )
+        )
+    }
+
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].update()
+    }
+
+    for (var i = 0; i < enemies.length; i++) {
+        if (enemies[i].expansionCount == enemies[i].maxExpansionCount) {
+            enemies.splice(i, 1)
+        }
+    }
+
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].display()
+    }
 
     //generate enemies
 
