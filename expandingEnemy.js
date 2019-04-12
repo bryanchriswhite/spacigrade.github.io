@@ -40,6 +40,7 @@ function ExpandingEnemy(x, y, v, maxExpansionCount) {
 
         stroke(51);
         strokeWeight(0);
+        fill(255, 255, 255);
         ellipseMode(RADIUS);
         ellipse(this.x, this.y, this.r, this.r);
     }

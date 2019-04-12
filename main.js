@@ -39,13 +39,18 @@ function draw() {
     moveStarField();
     displayScore();
 
-    if (!gameSong.isPlaying()) {
+    if (playing && !gameSong.isPlaying()) {
+        titleSong.stop()
         gameSong.play()
+    } else if (!playing && !titleSong.isPlaying()) {
+        gameSong.stop()
+        titleSong.play()
     }
 
     if (player.health <= 0) {
         if (playing) {
             playing = false;
+            enemies = [];
             menu.style.opacity = 1;
         }
         return;
@@ -210,13 +215,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
     menu = document.getElementById('menu');
     start = document.getElementById('start');
     start.addEventListener('click', function (e) {
-        console.log('CLICKED@@')
         reset()
         menu.style.opacity = 0;
     });
 });
 
 function reset() {
+    points = 0
     playing = true;
     player.health = 1
     player = new Player(canvasCenterX, canvasCenterY, 300);
