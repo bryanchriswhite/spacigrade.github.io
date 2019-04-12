@@ -13,7 +13,7 @@ const W_KEY = 87;
 const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
-const MUTE_KEY = 32;
+const MUTE_KEY = 77;
 
 let canvasWidth, canvasHeight, canvasCenterX, canvasCenterY,
     menu, start, highscoreTable;
@@ -123,17 +123,13 @@ function mouseClicked(e) {
 }
 
 function keyPressed() {
-    if (keyCode === MUTE_KEY) {
-        if (gameSong.isPlaying()) {
-            gameSong.volume(0);
+    console.log(keyCode)
+    if (keyCode == MUTE_KEY) {
+        let vol = getMasterVolume()
+        if (vol == 1.0) {
+            masterVolume(0)
         } else {
-            gameSong.volume(0.9);
-        }
-
-        if (titleSong.isPlaying()) {
-            titleSong.volume(0);
-        } else {
-            titleSong.volume(0.9);
+            masterVolume(1.0)
         }
     }
 }
