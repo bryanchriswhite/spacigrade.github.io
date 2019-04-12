@@ -38,14 +38,19 @@ function draw() {
     }
 
     if (enemies.length < maxEnemies) {
-        enemies.push(
-            new Enemy(
-                Math.floor(Math.random() * width),
-                Math.floor(Math.random() * height),
-                Math.floor(Math.random() * 2) + 1,
-                Math.floor(Math.random() * 100) + 80
-            )
-        )
+        var enemy;
+        switch (Math.floor(Math.random() * 3)) {
+            case 0:
+                enemy = newFallingEnemy();
+                break;
+            case 1:
+                enemy = newRisingEnemy();
+                break;
+            case 2:
+                enemy = newExpandingEnemy();
+                break
+        }
+        enemies.push(enemy)
     }
 
     for (var i = 0; i < enemies.length; i++) {
@@ -53,7 +58,7 @@ function draw() {
     }
 
     for (var i = 0; i < enemies.length; i++) {
-        if (enemies[i].expansionCount == enemies[i].maxExpansionCount) {
+        if (enemies[i].done) {
             enemies.splice(i, 1)
         }
     }
@@ -88,8 +93,6 @@ function displayCursor() {
         return
     }
     var p = calculateDash(player.dashMaxDistance, player.x, player.y, mouseX, mouseY)
-    console.log("Mouse: ", mouseX, mouseY)
-    console.log(p)
 
     stroke(255, 204, 0);
     strokeWeight(1);
@@ -152,4 +155,37 @@ function displayScore() {
     strokeWeight(0);
     textSize(12);
     text(points + ' points', 10, 20);
+}
+
+function newExpandingEnemy() {
+    return new ExpandingEnemy(
+        Math.floor(Math.random() * width),
+        Math.floor(Math.random() * height),
+        Math.floor(Math.random() * 2) + 1,
+        Math.floor(Math.random() * 100) + 80
+    )
+}
+
+function newFallingEnemy() {
+    var r = Math.floor(Math.random() * 20) + 15
+    return new FallingEnemy(
+        Math.floor(Math.random() * width),
+        -(2 * r),
+        Math.floor(Math.random() * width),
+        height + 2 * r,
+        Math.floor(Math.random() * 5) + 3,
+        r
+    )
+}
+
+function newRisingEnemy() {
+    var r = Math.floor(Math.random() * 20) + 15
+    return new FallingEnemy(
+        Math.floor(Math.random() * width),
+        height + 2 * r,
+        Math.floor(Math.random() * width),
+        -(2 * r),
+        Math.floor(Math.random() * 5) + 3,
+        r
+    )
 }

@@ -1,19 +1,25 @@
-function Enemy(x, y, v, maxExpansionCount) {
+function ExpandingEnemy(x, y, v, maxExpansionCount) {
     this.x = x;
     this.y = y;
     this.r = 10;
     this.sizeChangeVelocity = v;
     this.expansionCount = 0;
     this.maxExpansionCount = maxExpansionCount;
-    this.shrinking = false
-    this.tangible = false
+    this.shrinking = false;
+    this.tangible = false;
+    this.done = false;
 
     this.update = function () {
-        if (this.expansionCount >= this.maxExpansionCount) {
+        if (this.done) {
             return
         }
 
-        if (!this.tangible && this.r > 5) {
+        if (this.expansionCount >= this.maxExpansionCount) {
+            this.done = true;
+            return
+        }
+
+        if (!this.tangible && this.r > 20) {
             this.tangible = true;
             return
         }
@@ -28,6 +34,10 @@ function Enemy(x, y, v, maxExpansionCount) {
     }
 
     this.display = function () {
+        if (this.done) {
+            return
+        }
+
         stroke(51);
         strokeWeight(0);
         ellipseMode(RADIUS);
