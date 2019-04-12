@@ -10,6 +10,7 @@ let playing = false;
 
 // images
 var tardigrade;
+var tardigradeInjured;
 var asteroid;
 var menuSelectSound;
 
@@ -36,6 +37,7 @@ function preload() {
     titleSong = loadSound('./assets/horizon.mp3');
     asteroid = loadImage('./assets/simpleasteroid.png');
     tardigrade = loadImage('./assets/tardigrade.png');
+    tardigradeInjured = loadImage('./assets/tardigrade_no-bubble.png');
 }
 
 function setup() {
@@ -46,7 +48,7 @@ function setup() {
     canvasCenterX = canvasWidth / 2;
     canvasCenterY = canvasHeight / 2;
     createStarfield();
-    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade);
+    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade, tardigradeInjured);
 }
 
 
@@ -298,5 +300,5 @@ function reset() {
     points = 0
     playing = true;
     player.health = 1
-    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade);
+    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade, tardigradeInjured);
 }

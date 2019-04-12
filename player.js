@@ -1,5 +1,4 @@
-function Player(x, y, maxDistance, img) {
-    console.log(x, y, maxDistance, img)
+function Player(x, y, maxDistance, img, img2) {
     this.x = x;
     this.y = y;
     this.walkSpeed = 5;
@@ -11,6 +10,7 @@ function Player(x, y, maxDistance, img) {
     this.r = 20;
     this.health = 1;
     this.img = img;
+    this.img2 = img2;
 
     this.update = function () {
         if (this.dashing) { // dashing
