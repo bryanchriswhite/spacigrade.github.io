@@ -12,6 +12,11 @@ function Player(x, y, maxDistance, img, img2) {
     this.img = img;
     this.img2 = img2;
 
+    this.interval = null;
+    this.xDirection = 0;
+    this.yDirection = 0;
+    console.log('NEW PLAYER')
+
     this.update = function () {
         if (this.dashing) { // dashing
             this.dash()
@@ -55,8 +60,30 @@ function Player(x, y, maxDistance, img, img2) {
         strokeWeight(3);
 
         imageMode(CENTER);
-        console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
-        image(this.img, this.x, this.y, this.r * 2, this.r * 2);
+        // console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
+        if (this.health > 0) {
+            clearInterval(this.interval)
+            this.interval = null;
+            image(this.img, this.x, this.y, this.r * 2, this.r * 2);
+        } else {
+            if (this.interval == null) {
+                that = this;
+                this.randomDirection()
+                this.interval = setInterval(function () {
+                    that.randomDirection()
+                }, 3000)
+            }
+            if (this.xDirection != undefined || this.yDirection != undefined) {
+                this.x += this.xDirection;
+                this.y += this.yDirection;
+            }
+            image(this.img2, this.x, this.y, this.r * 2, this.r * 2);
+        }
+    };
+
+    this.randomDirection = function () {
+        this.xDirection = Math.random() < .5 ? 1 : -1;
+        this.yDirection = Math.random() < .5 ? 1 : -1;
     }
 
     this.walk = function (direction) {

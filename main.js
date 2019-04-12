@@ -35,6 +35,8 @@ function preload() {
     menuSelectSound = loadSound('./assets/sfx_menu_select4.wav');
     gameSong = loadSound('./assets/summerspot.mp3');
     titleSong = loadSound('./assets/horizon.mp3');
+    deathScream = loadSound('./assets/sfx_deathscream_alien6.wav');
+    collisionSound = loadSound('./assets/sfx_exp_cluster2.wav');
     asteroid = loadImage('./assets/simpleasteroid.png');
     tardigrade = loadImage('./assets/tardigrade.png');
     tardigradeInjured = loadImage('./assets/tardigrade_no-bubble.png');
@@ -65,12 +67,11 @@ function draw() {
         titleSong.play();
     }
 
-    if (!playing) {
-        return
-    }
 
     if (player.health <= 0) {
         if (playing) {
+            deathScream.play()
+            collisionSound.play()
             playing = false;
             highScores.push(points);
             enemies = [];
@@ -78,7 +79,12 @@ function draw() {
             highscoreTable.style.opacity = 1;
             updateHighscoreTable();
         }
+        player.display();
         return;
+    }
+
+    if (!playing) {
+        return
     }
 
     if (points % 20000 == 0) {

@@ -12,7 +12,9 @@
     <script src="star.js"></script>
 </head>
 <style>
-    body {margin: 0;}
+    body {
+        margin: 0;
+    }
 
     canvas {
         margin: 0;
@@ -34,11 +36,17 @@
         height: 100%;
 
         opacity: 1;
-        -webkit-transition: opacity 250ms;
-        -moz-transition: opacity 250ms;
-        -ms-transition: opacity 250ms;
-        -o-transition: opacity 250ms;
-        transition: opacity 250ms;
+        -webkit-transition: opacity 500ms;
+        -moz-transition: opacity 500ms;
+        -ms-transition: opacity 500ms;
+        -o-transition: opacity 500ms;
+        transition: opacity 500ms;
+
+        user-select: none; /* supported by Chrome and Opera */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
     }
 
     #start {
@@ -87,12 +95,12 @@
     <div id="highscore"></div>
     <div id="credits">
         <h2>Music</h2>
-        12insomnia - Summer Spot<br />
-        sabrepulse - Horizon remix<br /><br />
+        12insomnia - Summer Spot<br/>
+        sabrepulse - Horizon remix<br/><br/>
 
         <h2>Programmers</h2>
-        Bryan White<br />
-        Alexander Leitner<br />
+        Bryan White<br/>
+        Alexander Leitner<br/>
     </div>
 </div>
 </body>
