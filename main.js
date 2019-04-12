@@ -4,7 +4,8 @@ var stars = [];
 var starCount = 200;
 var points = 0;
 var maxEnemies = 10;
-var song;
+var gameSong;
+var titleSong;
 
 const SPACE_KEY = 32;
 const W_KEY = 87;
@@ -15,7 +16,8 @@ const D_KEY = 68;
 let canvasWidth, canvasHeight
 
 function preload() {
-    song = loadSound('./assets/summerspot.mp3');
+    gameSong = loadSound('./assets/summerspot.mp3');
+    titleSong = loadSound('./assets/horizon.mp3')
 }
 
 function setup() {
@@ -35,8 +37,8 @@ function draw() {
     moveStarField();
     displayScore();
 
-    if (!song.isPlaying()) {
-        song.play()
+    if (!gameSong.isPlaying()) {
+        gameSong.play()
     }
 
     if (player.health <= 0) {
