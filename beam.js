@@ -11,9 +11,14 @@ function Beam(y1) {
     this.update = function () {
         if (this.x2 <= width) {
             this.x2 += width / 10
-        } else if (this.thickness < 40) {
-            this.thickness += 3
+        }
+
+        if (this.thickness > 10) {
             this.tangible = true;
+        }
+
+        if (this.thickness < 40 && this.frame >= 50) {
+            this.thickness += 3
         }
 
         if (this.frame >= 90) {
@@ -28,7 +33,7 @@ function Beam(y1) {
             return
         }
 
-        fill(255, 255, 0)
+        stroke(255, 255, 0);
         strokeWeight(this.thickness);
         line(this.x, this.y, this.x2, this.y2)
     }

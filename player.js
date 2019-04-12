@@ -15,7 +15,6 @@ function Player(x, y, maxDistance, img, img2) {
     this.interval = null;
     this.xDirection = 0;
     this.yDirection = 0;
-    console.log('NEW PLAYER')
 
     this.update = function () {
         if (this.dashing) { // dashing
@@ -60,7 +59,6 @@ function Player(x, y, maxDistance, img, img2) {
         strokeWeight(3);
 
         imageMode(CENTER);
-        // console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
         if (this.health > 0) {
             clearInterval(this.interval)
             this.interval = null;

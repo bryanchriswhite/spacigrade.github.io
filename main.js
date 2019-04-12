@@ -1,22 +1,26 @@
 // game state
-var player;
-var enemies = [];
-var stars = [];
-var starCount = 200;
-var points = 0;
-var maxEnemies = 10;
-var highScores = [];
+let player;
+let enemies = [];
+let stars = [];
+let starCount = 200;
+let points = 0;
+let maxEnemies = 10;
+let highScores = [];
 let playing = false;
 
+// boss
+let bossStage = false;
+let boss;
+
 // images
-var tardigrade;
-var tardigradeInjured;
-var asteroid;
-var menuSelectSound;
+let tardigrade;
+let tardigradeInjured;
+let asteroid;
+let menuSelectSound;
 
 // audio
-var gameSong;
-var titleSong;
+let gameSong;
+let titleSong;
 
 // Keyboard input
 const SPACE_KEY = 32;
@@ -67,7 +71,6 @@ function draw() {
         titleSong.play();
     }
 
-
     if (player.health <= 0) {
         if (playing) {
             deathScream.play()
@@ -87,12 +90,45 @@ function draw() {
         return
     }
 
-    if (points % 20000 == 0) {
+    if (points % 20000 == 0 && points != 0) {
         maxEnemies += 1;
     }
 
-    if (enemies.length < maxEnemies) {
-        var enemy;
+    if (points % 500 == 0 && points != 0) {
+        // add boss
+        if (!bossStage) {
+            bossStage = true;
+            boss = new Boss(height / 2, width / 2, height / 3)
+        }
+    }
+
+    if (bossStage) {
+        if (boss.done) {
+            boss = null;
+            bossStage = false;
+            return
+        }
+
+        if (points % 700 == 0 && boss.tangible) {
+            let beamStartY = (Math.floor(Math.random() * player.y + 1) + player.y - 1)
+            enemies.push(new Beam(player.y, width))
+        }
+
+        if (points % 2000 == 0 && boss.tangible) {
+            enemies.push(newRisingEnemy())
+        }
+
+        boss.update();
+
+        if (boss.collidesWith(player) && boss.tangible) {
+            player.health -= 1;
+        }
+
+        boss.display();
+    }
+
+    if (enemies.length < maxEnemies && bossStage == false) {
+        let enemy;
         switch (Math.floor(Math.random() * 4)) {
             case 0:
                 enemy = newFallingEnemy();
@@ -110,16 +146,11 @@ function draw() {
         }
     }
 
-    // if (enemies.length < 1) {
-    //     enemies.push(new Boss(height / 2, width / 2, height / 3))
-    //     enemies.push(new Beam(50, width))
-    // }
-
-    for (var i = 0; i < enemies.length; i++) {
+    for (let i = 0; i < enemies.length; i++) {
         enemies[i].update()
     }
 
-    for (var i = 0; i < enemies.length; i++) {
+    for (let i = 0; i < enemies.length; i++) {
         if (enemies[i].done) {
             enemies.splice(i, 1)
         }
@@ -137,7 +168,7 @@ function draw() {
         displayCursor();
     }
 
-    for (var i = 0; i < enemies.length; i++) {
+    for (let i = 0; i < enemies.length; i++) {
         enemies[i].display()
     }
 
@@ -179,7 +210,7 @@ function displayCursor() {
     if (player.dashing) {
         return
     }
-    var p = calculateDash(player.dashMaxDistance, player.x, player.y, mouseX, mouseY)
+    let p = calculateDash(player.dashMaxDistance, player.x, player.y, mouseX, mouseY)
 
     stroke(255, 204, 0);
     strokeWeight(1);
@@ -190,13 +221,13 @@ function displayCursor() {
 }
 
 function createStarfield() {
-    for (var i = 0; i < starCount; i++) {
+    for (let i = 0; i < starCount; i++) {
         stars[i] = new Star();
     }
 }
 
 function moveStarField() {
-    for (var i = 0; i < starCount; i++) {
+    for (let i = 0; i < starCount; i++) {
         stars[i].move();
         stars[i].display();
     }
@@ -210,12 +241,12 @@ function distance(x1, y1, x2, y2) {
 }
 
 function calculateDash(maxDistance, x1, y1, x2, y2) {
-    var xDist = x2 - x1;
-    var yDist = y2 - y1;
-    var dist = Math.sqrt(xDist * xDist + yDist * yDist);
+    let xDist = x2 - x1;
+    let yDist = y2 - y1;
+    let dist = Math.sqrt(xDist * xDist + yDist * yDist);
 
     if (dist <= maxDistance) {
-        var p = {
+        let p = {
             x: x2,
             y: y2,
             distance: dist
@@ -223,12 +254,12 @@ function calculateDash(maxDistance, x1, y1, x2, y2) {
         return p
     }
 
-    var fractionOfTotal = maxDistance / dist;
+    let fractionOfTotal = maxDistance / dist;
 
     this.dashEndX = x1 + (xDist * fractionOfTotal);
     this.dashEndY = y1 + (yDist * fractionOfTotal);
 
-    var p = {
+    let p = {
         x: x1 + (xDist * fractionOfTotal),
         y: y1 + (yDist * fractionOfTotal),
         distance: maxDistance
@@ -254,7 +285,7 @@ function newExpandingEnemy() {
 }
 
 function newFallingEnemy() {
-    var r = Math.floor(Math.random() * player.r * 5) + player.r * 4
+    let r = Math.floor(Math.random() * player.r * 5) + player.r * 4
     return new FallingEnemy(
         Math.floor(Math.random() * width),
         -(2 * r),
@@ -267,7 +298,7 @@ function newFallingEnemy() {
 }
 
 function newRisingEnemy() {
-    var r = Math.floor(Math.random() * player.r * 5) + player.r * 4
+    let r = Math.floor(Math.random() * player.r * 5) + player.r * 4
     return new FallingEnemy(
         Math.floor(Math.random() * width),
         height + 2 * r,
@@ -297,7 +328,7 @@ function updateHighscoreTable() {
         highScores.sort((a, b) => b - a);
         highscoreTable.innerHTML = '<h2>high scores</h2><br />'
 
-        for (var i = 0; i < highScores.length; i++) {
+        for (let i = 0; i < highScores.length; i++) {
             if (i == 5) {
                 break
             }
@@ -311,6 +342,7 @@ function reset() {
     points = 0
     playing = true;
     player.health = 1;
+    bossStage = false;
     maxEnemies = 10;
     player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade, tardigradeInjured);
 }
