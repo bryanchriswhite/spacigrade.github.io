@@ -32,11 +32,6 @@ function Player(x, y, maxDistance, img) {
             player.walk(DOWN_ARROW)
         }
 
-        if (keyIsDown(SPACE_KEY)) {
-            player.initializeDash(mouseX, mouseY)
-        }
-
-
         // prevent from leaving border
         if (this.x > width) {
             this.x = width - this.r
@@ -107,7 +102,7 @@ function Player(x, y, maxDistance, img) {
     this.collidesWith = function (object) {
         var distance = dist(this.x, this.y, object.x, object.y);
 
-        if (distance < object.r + this.r) {
+        if (distance < object.r + this.r - 10) {
             return true;
         }
 

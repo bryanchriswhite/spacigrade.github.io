@@ -61,11 +61,37 @@
         transition: opacity 250ms;
     }
 
+    #credits {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-family: Helvetica;
+        position: relative;
+
+        opacity: 0;
+        -webkit-transition: opacity 250ms;
+        -moz-transition: opacity 250ms;
+        -ms-transition: opacity 250ms;
+        -o-transition: opacity 250ms;
+        transition: opacity 250ms;
+    }
+
 </style>
 <body>
 <div id="menu">
     <h1 id="start">Start</h1>
     <div id="highscore"></div>
+    <div id="credits">
+        <h2>Music</h2>
+        12insomnia - Summer Spot<br />
+        sabrepulse - Horizon remix<br /><br />
+
+        <h2>Programmers</h2>
+        Bryan White<br />
+        Alexander Leitner<br />
+    </div>
 </div>
 </body>
 </html>

@@ -24,6 +24,7 @@ const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
 const MUTE_KEY = 77;
+const CREDITS_KEY = 67;
 
 // html and sizing
 let canvasWidth, canvasHeight, canvasCenterX, canvasCenterY,
@@ -95,7 +96,10 @@ function draw() {
                 enemy = newExpandingEnemy();
                 break
         }
-        enemies.push(enemy)
+
+        if (dist(enemy.x, enemy.y, player.x, player.y) > player.r * 2) {
+            enemies.push(enemy)
+        }
     }
 
     for (var i = 0; i < enemies.length; i++) {
@@ -143,6 +147,18 @@ function keyPressed() {
         } else {
             masterVolume(1.0)
         }
+    }
+
+    if (keyCode == CREDITS_KEY && !playing) {
+        if (document.getElementById('credits').style.opacity == 0) {
+            document.getElementById('credits').style.opacity = 1;
+        } else {
+            document.getElementById('credits').style.opacity = 0;
+        }
+    }
+
+    if (keyCode == SPACE_KEY) {
+        player.initializeDash(mouseX, mouseY)
     }
 }
 
