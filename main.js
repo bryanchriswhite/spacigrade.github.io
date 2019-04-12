@@ -94,7 +94,7 @@ function draw() {
         maxEnemies += 1;
     }
 
-    if (points % 500 == 0 && points != 0) {
+    if (points % 30000 == 0 && points != 0) {
         // add boss
         if (!bossStage) {
             bossStage = true;
