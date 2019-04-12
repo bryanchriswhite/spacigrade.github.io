@@ -310,6 +310,7 @@ function updateHighscoreTable() {
 function reset() {
     points = 0
     playing = true;
-    player.health = 1
+    player.health = 1;
+    maxEnemies = 10;
     player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade, tardigradeInjured);
 }
