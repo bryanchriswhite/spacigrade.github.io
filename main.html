@@ -44,11 +44,28 @@
         cursor: pointer;
     }
 
+    #highscore {
+        display: flex;
+        flex-direction: column;
+        color: red;
+        justify-content: center;
+        align-items: center;
+        font-family: Helvetica;
+        position: relative;
+
+        opacity: 1;
+        -webkit-transition: opacity 250ms;
+        -moz-transition: opacity 250ms;
+        -ms-transition: opacity 250ms;
+        -o-transition: opacity 250ms;
+        transition: opacity 250ms;
+    }
+
 </style>
 <body>
 <div id="menu">
-    <h2 id="highscore"></h2>
     <h1 id="start">Start</h1>
+    <div id="highscore"></div>
 </div>
 </body>
 </html>

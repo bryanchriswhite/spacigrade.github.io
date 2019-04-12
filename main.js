@@ -6,20 +6,22 @@ var points = 0;
 var maxEnemies = 10;
 var gameSong;
 var titleSong;
+var highScores = [];
 
 const SPACE_KEY = 32;
 const W_KEY = 87;
 const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
+const MUTE_KEY = 32;
 
 let canvasWidth, canvasHeight, canvasCenterX, canvasCenterY,
-    menu, start;
+    menu, start, highscoreTable;
 let playing = false;
 
 function preload() {
     gameSong = loadSound('./assets/summerspot.mp3');
-    titleSong = loadSound('./assets/horizon.mp3')
+    titleSong = loadSound('./assets/horizon.mp3');
 }
 
 function setup() {
@@ -27,8 +29,8 @@ function setup() {
     canvasHeight = window.innerHeight * .99;
     createCanvas(canvasWidth, canvasHeight);
 
-    canvasCenterX = canvasWidth/2;
-    canvasCenterY = canvasHeight/2;
+    canvasCenterX = canvasWidth / 2;
+    canvasCenterY = canvasHeight / 2;
     createStarfield();
     player = new Player(canvasCenterX, canvasCenterY, 300);
 }
@@ -40,20 +42,31 @@ function draw() {
     displayScore();
 
     if (playing && !gameSong.isPlaying()) {
-        titleSong.stop()
-        gameSong.play()
+        titleSong.stop();
+        gameSong.play();
     } else if (!playing && !titleSong.isPlaying()) {
-        gameSong.stop()
-        titleSong.play()
+        gameSong.stop();
+        titleSong.play();
+    }
+
+    if (!playing) {
+        return
     }
 
     if (player.health <= 0) {
         if (playing) {
             playing = false;
+            highScores.push(points);
             enemies = [];
             menu.style.opacity = 1;
+            highscoreTable.style.opacity = 1;
+            updateHighscoreTable();
         }
         return;
+    }
+
+    if (points % 20000 == 0) {
+        maxEnemies += 1;
     }
 
     if (enemies.length < maxEnemies) {
@@ -106,6 +119,22 @@ function mouseClicked(e) {
     if (playing) {
         player.initializeDash(e.clientX, e.clientY)
         return
+    }
+}
+
+function keyPressed() {
+    if (keyCode === MUTE_KEY) {
+        if (gameSong.isPlaying()) {
+            gameSong.volume(0);
+        } else {
+            gameSong.volume(0.9);
+        }
+
+        if (titleSong.isPlaying()) {
+            titleSong.volume(0);
+        } else {
+            titleSong.volume(0.9);
+        }
     }
 }
 
@@ -188,25 +217,25 @@ function newExpandingEnemy() {
 }
 
 function newFallingEnemy() {
-    var r = Math.floor(Math.random() * 20) + 15
+    var r = Math.floor(Math.random() * player.r * 5) + player.r * 4
     return new FallingEnemy(
         Math.floor(Math.random() * width),
         -(2 * r),
         Math.floor(Math.random() * width),
         height + 2 * r,
-        Math.floor(Math.random() * 5) + 3,
+        Math.floor(Math.random() * 3) + 1,
         r
     )
 }
 
 function newRisingEnemy() {
-    var r = Math.floor(Math.random() * 20) + 15
+    var r = Math.floor(Math.random() * player.r * 5) + player.r * 4
     return new FallingEnemy(
         Math.floor(Math.random() * width),
         height + 2 * r,
         Math.floor(Math.random() * width),
         -(2 * r),
-        Math.floor(Math.random() * 5) + 3,
+        Math.floor(Math.random() * 3) + 1,
         r
     )
 }
@@ -214,11 +243,29 @@ function newRisingEnemy() {
 document.addEventListener('DOMContentLoaded', function (e) {
     menu = document.getElementById('menu');
     start = document.getElementById('start');
+    highscoreTable = document.getElementById('highscore');
     start.addEventListener('click', function (e) {
         reset()
         menu.style.opacity = 0;
+        highscoreTable.style.opacity = 0;
     });
 });
+
+function updateHighscoreTable() {
+
+    if (highScores.length > 0) {
+        highScores.sort((a, b) => b - a);
+        highscoreTable.innerHTML = '<h2>high scores</h2><br />'
+
+        for (var i = 0; i < highScores.length; i++) {
+            if (i == 5) {
+                break
+            }
+
+            highscoreTable.innerHTML = highscoreTable.innerHTML + highScores[i] + '<br /><br />'
+        }
+    }
+}
 
 function reset() {
     points = 0
