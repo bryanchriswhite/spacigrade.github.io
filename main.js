@@ -4,13 +4,17 @@ var stars = [];
 var starCount = 200;
 var points = 0;
 var maxEnemies = 10;
-var cursor;
+var song;
 
 const SPACE_KEY = 32;
 const W_KEY = 87;
 const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
+
+function preload() {
+    song = loadSound('./assets/summerspot.mp3');
+}
 
 function setup() {
     createCanvas(displayWidth * .99, displayHeight * .89);
@@ -22,6 +26,10 @@ function draw() {
     background(0);
     moveStarField();
     displayScore();
+
+    if (!song.isPlaying()) {
+        song.play()
+    }
 
     if (player.health <= 0) {
         textSize(32);
