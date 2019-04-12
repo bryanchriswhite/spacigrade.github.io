@@ -41,7 +41,8 @@ function FallingEnemy(x, y, x2, y2, v, r, img) {
 
     this.collidesWith = function (object) {
         var distance = dist(this.x, this.y, object.x, object.y);
-        if (distance < object.r + this.r) {
+
+        if (distance < object.r + this.r - 10) {
             return true;
         }
 

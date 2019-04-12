@@ -98,14 +98,4 @@ function Player(x, y, maxDistance, img, img2) {
             this.dashing = false;
         }
     }
-
-    this.collidesWith = function (object) {
-        var distance = dist(this.x, this.y, object.x, object.y);
-
-        if (distance < object.r + this.r - 10) {
-            return true;
-        }
-
-        return false;
-    }
 }

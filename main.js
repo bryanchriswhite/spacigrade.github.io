@@ -104,6 +104,11 @@ function draw() {
         }
     }
 
+    // if (enemies.length < 1) {
+    //     enemies.push(new Boss(height / 2, width / 2, height / 3))
+    //     enemies.push(new Beam(50, width))
+    // }
+
     for (var i = 0; i < enemies.length; i++) {
         enemies[i].update()
     }
@@ -116,7 +121,7 @@ function draw() {
 
     if (playing) {
         for (h = 0; h < enemies.length; h++) {
-            if (player.collidesWith(enemies[h]) && enemies[h].tangible) {
+            if (enemies[h].collidesWith(player) && enemies[h].tangible) {
                 player.health -= 1;
             }
         }
