@@ -12,15 +12,23 @@ const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
 
+let canvasWidth, canvasHeight
+
 function preload() {
     song = loadSound('./assets/summerspot.mp3');
 }
 
 function setup() {
-    createCanvas(displayWidth * .99, displayHeight * .89);
+    // canvasWidth = displayWidth * .99;
+    // canvasHeight = displayHeight * .99;
+    canvasWidth = window.innerWidth * .99;
+    canvasHeight = window.innerHeight * .99;
+    createCanvas(canvasWidth, canvasHeight);
     createStarfield();
     player = new Player(displayWidth / 2, displayHeight / 2, 300);
 }
+
+let playing = false
 
 function draw() {
     background(0);
@@ -63,29 +71,33 @@ function draw() {
         }
     }
 
-    player.update()
-
-
-    for (h = 0; h < enemies.length; h++) {
-        if (player.collidesWith(enemies[h]) && enemies[h].tangible) {
-            player.health -= 1;
+    if (playing) {
+        for (h = 0; h < enemies.length; h++) {
+            if (player.collidesWith(enemies[h]) && enemies[h].tangible) {
+                player.health -= 1;
+            }
         }
+
+        player.update()
+        player.display();
+        displayCursor();
     }
-
-
-    player.display();
 
     for (var i = 0; i < enemies.length; i++) {
         enemies[i].display()
     }
 
-    displayCursor();
-
+    if (!playing) return;
     points += 10;
 }
 
 function mouseClicked(e) {
-    player.initializeDash(e.clientX, e.clientY)
+    if (playing) {
+        player.initializeDash(e.clientX, e.clientY)
+        return
+    }
+
+    clickMenu(e)
 }
 
 function displayCursor() {
