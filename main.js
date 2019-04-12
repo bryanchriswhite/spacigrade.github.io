@@ -12,23 +12,25 @@ const A_KEY = 65;
 const S_KEY = 83;
 const D_KEY = 68;
 
-let canvasWidth, canvasHeight
+let canvasWidth, canvasHeight, canvasCenterX, canvasCenterY,
+    menu, start;
+let playing = false;
 
 function preload() {
     song = loadSound('./assets/summerspot.mp3');
 }
 
 function setup() {
-    // canvasWidth = displayWidth * .99;
-    // canvasHeight = displayHeight * .99;
     canvasWidth = window.innerWidth * .99;
     canvasHeight = window.innerHeight * .99;
     createCanvas(canvasWidth, canvasHeight);
+
+    canvasCenterX = canvasWidth/2;
+    canvasCenterY = canvasHeight/2;
     createStarfield();
-    player = new Player(displayWidth / 2, displayHeight / 2, 300);
+    player = new Player(canvasCenterX, canvasCenterY, 300);
 }
 
-let playing = false
 
 function draw() {
     background(0);
@@ -40,8 +42,10 @@ function draw() {
     }
 
     if (player.health <= 0) {
-        textSize(32);
-        text('You Lose', displayWidth / 2, displayHeight / 2);
+        if (playing) {
+            playing = false;
+            menu.style.opacity = 1;
+        }
         return;
     }
 
@@ -91,8 +95,6 @@ function mouseClicked(e) {
         player.initializeDash(e.clientX, e.clientY)
         return
     }
-
-    clickMenu(e)
 }
 
 function displayCursor() {
@@ -166,25 +168,18 @@ function displayScore() {
     text(points + ' points', 10, 20);
 }
 
-const startWidth = 100
-const startHeight = 40
-let startBound = {
-    x: [canvasWidth/2 - startWidth/2]
-}
-// function displayMenu() {
-//     fill(255, 0, 0)
-//     rectMode(RADIUS)
-//     rect(canvasWidth / 2 , canvasHeight / 2, startWidth, startHeight)
-//     fill(255, 255, 255)
-//     stroke(0);
-//     strokeWeight(0);
-//     textSize(46);
-//     textAlign(CENTER)
-//     text('START', canvasWidth / 2, canvasHeight / 2);
-// }
+document.addEventListener('DOMContentLoaded', function (e) {
+    menu = document.getElementById('menu');
+    start = document.getElementById('start');
+    start.addEventListener('click', function (e) {
+        console.log('CLICKED@@')
+        reset()
+        menu.style.opacity = 0;
+    });
+});
 
-// function clickMenu(e) {
-//     if (e.mouseX >= startBound.x[0] && e.mouseX <= startBound) {
-//
-//     }
-// }
+function reset() {
+    playing = true;
+    player.health = 1
+    player = new Player(canvasCenterX, canvasCenterY, 300);
+}

@@ -1,5 +1,5 @@
 <html>
-  <head>
+<head>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>-->
     <script src="assets/p5.js"></script>
     <script src="assets/p5.sound.js"></script>
@@ -7,17 +7,47 @@
     <script src="player.js"></script>
     <script src="enemy.js"></script>
     <script src="star.js"></script>
-  </head>
-  <style>
+</head>
+<style>
+    body {margin: 0;}
+
     canvas {
-      margin: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
     }
-  </style>
-  <body>
-  </body>
+
+    #menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-family: Helvetica;
+        height: 100%;
+
+        opacity: 1;
+        -webkit-transition: opacity 250ms;
+        -moz-transition: opacity 250ms;
+        -ms-transition: opacity 250ms;
+        -o-transition: opacity 250ms;
+        transition: opacity 250ms;
+    }
+
+    #start {
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+<div id="menu">
+    <h2 id="highscore"></h2>
+    <h1 id="start">Start</h1>
+</div>
+</body>
 </html>
