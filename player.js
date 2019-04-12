@@ -55,9 +55,14 @@ function Player(x, y, maxDistance, img, img2) {
         strokeWeight(3);
 
         imageMode(CENTER);
-        console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
-        image(this.img, this.x, this.y, this.r * 2, this.r * 2);
-    }
+        // console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
+        if (this.health > 0) {
+            image(this.img, this.x, this.y, this.r * 2, this.r * 2);
+        } else {
+            // rotate(PI/1);
+            image(this.img2, this.x, this.y, this.r * 2, this.r * 2);
+        }
+    };
 
     this.walk = function (direction) {
         switch (direction) {
