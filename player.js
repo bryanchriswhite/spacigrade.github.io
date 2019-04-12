@@ -1,4 +1,5 @@
-function Player(x, y, maxDistance) {
+function Player(x, y, maxDistance, img) {
+    console.log(x, y, maxDistance, img)
     this.x = x;
     this.y = y;
     this.walkSpeed = 5;
@@ -9,6 +10,7 @@ function Player(x, y, maxDistance) {
     this.dashMaxDistance = maxDistance;
     this.r = 20;
     this.health = 1;
+    this.img = img;
 
     this.update = function () {
         if (this.dashing) { // dashing
@@ -56,8 +58,10 @@ function Player(x, y, maxDistance) {
     this.display = function () {
         stroke(51);
         strokeWeight(3);
-        ellipseMode(RADIUS);
-        ellipse(this.x, this.y, this.r, this.r);
+
+        imageMode(CENTER);
+        console.log(this.img, this.x, this.y, this.r * 2, this.r * 2)
+        image(this.img, this.x, this.y, this.r * 2, this.r * 2);
     }
 
     this.walk = function (direction) {

@@ -1,4 +1,4 @@
-function FallingEnemy(x, y, x2, y2, v, r) {
+function FallingEnemy(x, y, x2, y2, v, r, img) {
     this.x = x;
     this.y = y;
     this.v = v;
@@ -9,8 +9,7 @@ function FallingEnemy(x, y, x2, y2, v, r) {
     this.startY = y;
     this.tangible = true;
     this.done = false;
-
-    console.log(x, y, x2, y2, v, r)
+    this.img = img;
 
     this.update = function () {
         if (this.done) {
@@ -36,8 +35,8 @@ function FallingEnemy(x, y, x2, y2, v, r) {
         stroke(51);
         strokeWeight(0);
         fill(255, 255, 255);
-        ellipseMode(RADIUS);
-        ellipse(this.x, this.y, this.r, this.r);
+        imageMode(CENTER);
+        image(this.img, this.x, this.y, this.r * 2, this.r * 2);
     }
 
     this.collidesWith = function (object) {

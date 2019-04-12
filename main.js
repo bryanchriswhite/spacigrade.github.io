@@ -1,13 +1,23 @@
+// game state
 var player;
 var enemies = [];
 var stars = [];
 var starCount = 200;
 var points = 0;
 var maxEnemies = 10;
+var highScores = [];
+let playing = false;
+
+// images
+var tardigrade;
+var asteroid;
+var menuSelectSound;
+
+// audio
 var gameSong;
 var titleSong;
-var highScores = [];
 
+// Keyboard input
 const SPACE_KEY = 32;
 const W_KEY = 87;
 const A_KEY = 65;
@@ -15,13 +25,16 @@ const S_KEY = 83;
 const D_KEY = 68;
 const MUTE_KEY = 77;
 
+// html and sizing
 let canvasWidth, canvasHeight, canvasCenterX, canvasCenterY,
     menu, start, highscoreTable;
-let playing = false;
 
 function preload() {
+    menuSelectSound = loadSound('./assets/sfx_menu_select4.wav');
     gameSong = loadSound('./assets/summerspot.mp3');
     titleSong = loadSound('./assets/horizon.mp3');
+    asteroid = loadImage('./assets/simpleasteroid.png');
+    tardigrade = loadImage('./assets/tardigrade.png');
 }
 
 function setup() {
@@ -32,7 +45,7 @@ function setup() {
     canvasCenterX = canvasWidth / 2;
     canvasCenterY = canvasHeight / 2;
     createStarfield();
-    player = new Player(canvasCenterX, canvasCenterY, 300);
+    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade);
 }
 
 
@@ -71,14 +84,14 @@ function draw() {
 
     if (enemies.length < maxEnemies) {
         var enemy;
-        switch (Math.floor(Math.random() * 3)) {
+        switch (Math.floor(Math.random() * 4)) {
             case 0:
                 enemy = newFallingEnemy();
                 break;
             case 1:
                 enemy = newRisingEnemy();
                 break;
-            case 2:
+            default:
                 enemy = newExpandingEnemy();
                 break
         }
@@ -123,7 +136,6 @@ function mouseClicked(e) {
 }
 
 function keyPressed() {
-    console.log(keyCode)
     if (keyCode == MUTE_KEY) {
         let vol = getMasterVolume()
         if (vol == 1.0) {
@@ -220,7 +232,8 @@ function newFallingEnemy() {
         Math.floor(Math.random() * width),
         height + 2 * r,
         Math.floor(Math.random() * 3) + 1,
-        r
+        r,
+        asteroid
     )
 }
 
@@ -232,7 +245,8 @@ function newRisingEnemy() {
         Math.floor(Math.random() * width),
         -(2 * r),
         Math.floor(Math.random() * 3) + 1,
-        r
+        r,
+        asteroid
     )
 }
 
@@ -244,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         reset()
         menu.style.opacity = 0;
         highscoreTable.style.opacity = 0;
+        menuSelectSound.play();
     });
 });
 
@@ -267,5 +282,5 @@ function reset() {
     points = 0
     playing = true;
     player.health = 1
-    player = new Player(canvasCenterX, canvasCenterY, 300);
+    player = new Player(canvasCenterX, canvasCenterY, 300, tardigrade);
 }
