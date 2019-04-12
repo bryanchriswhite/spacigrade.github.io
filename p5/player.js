@@ -11,24 +11,27 @@ function Player(x, y, maxDistance) {
     this.health = 1;
 
     this.update = function () {
-
         if (this.dashing) { // dashing
             this.dash()
         }
-        if (keyIsDown(LEFT_ARROW)) {
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(A_KEY)) {
             player.walk(LEFT_ARROW)
         }
 
-        if (keyIsDown(RIGHT_ARROW)) {
+        if (keyIsDown(RIGHT_ARROW) || keyIsDown(D_KEY)) {
             player.walk(RIGHT_ARROW)
         }
 
-        if (keyIsDown(UP_ARROW)) {
+        if (keyIsDown(UP_ARROW) || keyIsDown(W_KEY)) {
             player.walk(UP_ARROW)
         }
 
-        if (keyIsDown(DOWN_ARROW)) {
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(S_KEY)) {
             player.walk(DOWN_ARROW)
+        }
+
+        if (keyIsDown(SPACE_KEY)) {
+            player.initializeDash(mouseX, mouseY)
         }
 
 
@@ -99,7 +102,6 @@ function Player(x, y, maxDistance) {
     this.collidesWith = function (object) {
         var distance = dist(this.x, this.y, object.x, object.y);
 
-        console.log(distance)
         if (distance < object.r + this.r) {
             return true;
         }
