@@ -74,8 +74,6 @@ function Player(x, y, maxDistance, img, img2) {
                 }, 3000)
             }
             if (this.xDirection != undefined || this.yDirection != undefined) {
-                console.log(this.yDirection, " + ", this.y, " = ", this.yDirection + this.y);
-                console.log(this.xDirection, " + ", this.x, " = ", this.xDirection + this.x);
                 this.x += this.xDirection;
                 this.y += this.yDirection;
             }
