@@ -2,14 +2,14 @@ function Boss(x, y, r, img) {
     // Circle used to determine boss movement
     this.centerX = x;
     this.centerY = y;
-    this.degree = 0;
+    this.degree = 270;
     this.degreeChange = 5;
     this.rFromCenter = r;
     this.transitioning = true;
 
     // Boss position
     this.x = 0 - 40;
-    this.y = y + r;
+    this.y = y - 2 * r;
     this.r = 40;
 
     // Boss attributes
@@ -24,8 +24,8 @@ function Boss(x, y, r, img) {
         }
 
         if (this.transitioning) {
-            if (this.x < this.centerX) {
-                this.x += this.r;
+            if (this.x < 2 * this.centerX) {
+                this.x += 4;
                 return
             } else {
                 this.transitioning = false;
